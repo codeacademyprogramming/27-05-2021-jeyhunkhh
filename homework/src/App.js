@@ -1,9 +1,6 @@
 import React from 'react'
+import { OrdersPage } from './modules/orders/components/OrdersPage'
 
 export default function App() {
-    return (
-        <div>
-            <h1 className="text-danger"> Salam</h1>
-        </div>
-    )
+    return <OrdersPage/>
 }

@@ -8,6 +8,12 @@ class CoffeeService extends HttpClient {
     async getCoffee(){
         return this.get('coffee.json');
     }
+
+    getCoffeeById(id){
+       return this.getCoffee().then(res=>{
+            return res.data.find(item=>item.id === id)
+        })
+    }
 }
 
 export const coffeeService = new CoffeeService();

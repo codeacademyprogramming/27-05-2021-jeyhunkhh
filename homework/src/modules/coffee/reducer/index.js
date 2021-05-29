@@ -1,5 +1,5 @@
-import { COFFEE_ACTIONS } from "../actions/cosnts";
-import {ASYNC_STATUS} from '../../../redux/const'
+import { COFFEE_ACTIONS } from "../actions/consts";
+import {ASYNC_STATUS} from '../../../redux/consts'
 
 const initialState = {
   data: [],
@@ -9,21 +9,21 @@ const initialState = {
 
 export function coffeeReducer(state = initialState, action) {
   switch (action.type) {
-    case STUDENT_ACTIONS.GET_STUDENT:
+    case COFFEE_ACTIONS.GET_COFFEE:
       return {
         ...state,
         status: ASYNC_STATUS.LOADING,
         data: [],
         error: null,
       };
-    case STUDENT_ACTIONS.GET_STUDENT_SUCCESS:
+    case COFFEE_ACTIONS.GET_COFFEE_SUCCESS:
       return {
         ...state,
         status: ASYNC_STATUS.SUCCESS,
         data: action.payload,
         error: null,
       };
-    case STUDENT_ACTIONS.GET_STUDENT_ERROR:
+    case COFFEE_ACTIONS.GET_COFFEE_ERROR:
       return {
         ...state,
         status: ASYNC_STATUS.ERROR,

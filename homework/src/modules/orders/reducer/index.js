@@ -4,6 +4,7 @@ const order = [
     {
     id:1,
     coffeeId: 1,
+    note: "extra caramel",
     count:1,
     price:5,
     status:'DONE'
