@@ -1,13 +1,8 @@
 import React, { useCallback, useState } from "react";
 import { Modal, Button, Form } from "react-bootstrap";
-import { ORDER_STATUS } from "../actions/consts";
-import { v4 as uuidv4 } from "uuid";
 
 export const AddOrder = ({ show, handleClose, coffees, handleSave }) => {
-  const [addForm, setAddForm] = useState({
-    id: uuidv4(),
-    status: ORDER_STATUS.CREATED,
-  });
+  const [addForm, setAddForm] = useState({});
 
   const handleInputChange = useCallback(
     (e) => {
