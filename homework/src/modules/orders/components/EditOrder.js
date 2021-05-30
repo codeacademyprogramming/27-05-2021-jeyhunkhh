@@ -35,7 +35,6 @@ export const EditOrder = ({ show, handleClose, data, handleEditSave }) => {
               })}
             </Form.Control>
           </Form.Group>
-
           <Form.Group controlId="count">
             <Form.Label>Count</Form.Label>
             <Form.Control

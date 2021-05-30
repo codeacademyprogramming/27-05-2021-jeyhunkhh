@@ -1,5 +1,5 @@
-import React, { useCallback, useEffect, useState } from "react";
-import { Container, Table, Button } from "react-bootstrap";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
+import { Container, Table, Button, Form } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { getCoffee } from "../../coffee/actions";
 import { coffeeService } from "../../coffee/service";
@@ -13,6 +13,7 @@ import { v4 as uuidv4 } from "uuid";
 export const OrdersPage = () => {
   const [show, setShow] = useState(false);
   const [editshow, setEditShow] = useState(false);
+  const [sortField, setSortField] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
   const handleEditClose = () => setEditShow(false);
@@ -20,6 +21,7 @@ export const OrdersPage = () => {
   const dispatch = useDispatch();
   const { orders } = useSelector((state) => state.orders);
   const coffees = useSelector((state) => state.coffees);
+
   useEffect(() => {
     getCoffee(dispatch);
   }, [dispatch]);
@@ -63,6 +65,23 @@ export const OrdersPage = () => {
     handleEditShow();
   }, []);
 
+  const computedOrders = useMemo(() => {
+    let ordersData = orders;
+    let statusOrder = [];
+    for (const key in ORDER_STATUS) {
+      statusOrder.push(ORDER_STATUS[key]);
+    }
+
+    if (sortField) {
+      ordersData = ordersData.sort(function (a, b) {
+        return statusOrder.indexOf(a.status) - statusOrder.indexOf(b.status);
+      });
+    }
+
+    return [ordersData];
+  }, [sortField, orders]);
+  console.log(computedOrders);
+
   return (
     <Container>
       <h1 className="text-center my-3">Order List</h1>
@@ -82,12 +101,18 @@ export const OrdersPage = () => {
             <th>Count</th>
             <th>Special note</th>
             <th>Price</th>
-            <th>Status</th>
+            <th>
+              <Form.Check
+                onClick={(e) => setSortField(!sortField)}
+                type="checkbox"
+                label="Status"
+              />
+            </th>
             <th></th>
           </tr>
         </thead>
         <tbody>
-          {orders.map((order, idx) => (
+          {computedOrders[0].map((order, idx) => (
             <OrderItem
               key={order.id}
               onEditOrderData={onEditOrderData}
