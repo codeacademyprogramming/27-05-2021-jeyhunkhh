@@ -13,3 +13,11 @@ export const addOrder = (data) => (dispatch) => {
     });
   }
 };
+
+export const updateOrder = (data) => (dispatch) => {
+    dispatch({
+      type: ORDER_ACTIONS.UPDATE_ORDER,
+      payload: data,
+    });
+};
+

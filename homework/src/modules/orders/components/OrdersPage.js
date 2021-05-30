@@ -3,36 +3,65 @@ import { Container, Table, Button } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { getCoffee } from "../../coffee/actions";
 import { coffeeService } from "../../coffee/service";
-import { addOrder } from "../actions";
+import { addOrder, updateOrder } from "../actions";
 import { AddOrder } from "./AddOrder";
+import { EditOrder } from "./EditOrder";
 import { OrderItem } from "./OrderItem";
+import { ORDER_STATUS } from "../actions/consts";
+import { v4 as uuidv4 } from "uuid";
 
 export const OrdersPage = () => {
   const [show, setShow] = useState(false);
-
+  const [editshow, setEditShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+  const handleEditClose = () => setEditShow(false);
+  const handleEditShow = () => setEditShow(true);
   const dispatch = useDispatch();
-  const {orders} = useSelector((state) => state.orders);
-  console.log(orders);
+  const { orders } = useSelector((state) => state.orders);
   const coffees = useSelector((state) => state.coffees);
   useEffect(() => {
     getCoffee(dispatch);
   }, [dispatch]);
 
+  const [editValue, setEditValue] = useState(null);
   const handleSave = useCallback(
     async (e, data) => {
       e.preventDefault();
       let price;
-      await coffeeService.getCoffeeById(data.coffeeId).then((res)=>{
-         price = res.price;
-      })
-      let newData = {...data, price: price * data.count}
-      dispatch(addOrder(newData))
+      await coffeeService.getCoffeeById(data.coffeeId).then((res) => {
+        price = res.price;
+      });
+      let newData = {
+        ...data,
+        price: price * data.count,
+        id: uuidv4(),
+        status: ORDER_STATUS.CREATED,
+      };
+      dispatch(addOrder(newData));
       handleClose();
     },
     [dispatch]
   );
+
+  const handleEditSave = useCallback(
+    async (e, data) => {
+      e.preventDefault();
+      let price;
+      await coffeeService.getCoffeeById(data.coffeeId).then((res) => {
+        price = res.price;
+      });
+      let editData = { ...data, price: price * data.count };
+      dispatch(updateOrder(editData));
+      handleEditClose();
+    },
+    [dispatch]
+  );
+
+  const onEditOrderData = useCallback((data) => {
+    setEditValue(data);
+    handleEditShow();
+  }, []);
 
   return (
     <Container>
@@ -54,11 +83,18 @@ export const OrdersPage = () => {
             <th>Special note</th>
             <th>Price</th>
             <th>Status</th>
+            <th></th>
           </tr>
         </thead>
         <tbody>
           {orders.map((order, idx) => (
-            <OrderItem key={order.id} idx={idx} order={order} />
+            <OrderItem
+              key={order.id}
+              onEditOrderData={onEditOrderData}
+              handleShow={handleEditShow}
+              idx={idx}
+              order={order}
+            />
           ))}
         </tbody>
       </Table>
@@ -68,6 +104,14 @@ export const OrdersPage = () => {
         handleSave={handleSave}
         coffees={coffees}
         handleClose={handleClose}
+      />
+
+      <EditOrder
+        show={editshow}
+        data={editValue}
+        coffees={coffees}
+        handleEditSave={handleEditSave}
+        handleClose={handleEditClose}
       />
     </Container>
   );

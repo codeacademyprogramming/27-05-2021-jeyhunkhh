@@ -1,4 +1,4 @@
-import { ORDER_ACTIONS } from "../actions/consts";
+import { ORDER_ACTIONS, ORDER_STATUS } from "../actions/consts";
 
 const orders = [
   {
@@ -7,7 +7,7 @@ const orders = [
     note: "extra caramel",
     count: 1,
     price: 5,
-    status: "DONE",
+    status: ORDER_STATUS.IN_PROGRESS,
   },
 ];
 
@@ -15,6 +15,16 @@ export function orderReducer(state = { orders }, action) {
   switch (action.type) {
     case ORDER_ACTIONS.ADD_ORDER_SUCCESS:
       return { ...state, orders: [...state.orders, action.payload] };
+    case ORDER_ACTIONS.UPDATE_ORDER:
+      return {
+        ...state,
+        orders: state.orders.map((order) => {
+          if (order.id === action.payload.id) {
+            return { ...action.payload };
+          }
+          return order;
+        }),
+      };
     default:
       return state;
   }
