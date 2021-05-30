@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { coffeeService } from "../../coffee/service";
 import { Image, Button } from "react-bootstrap";
+import { ORDER_STATUS } from "../actions/consts";
 
 export const OrderItem = ({ order, idx, handleShow, onEditOrderData }) => {
   const [coffee, setCoffee] = useState({});
@@ -20,12 +21,24 @@ export const OrderItem = ({ order, idx, handleShow, onEditOrderData }) => {
       <td>{order.note}</td>
       <td>{order.price.toFixed(2)}</td>
       <td>
-        <span className="badge badge-success">{order.status}</span>
+        <span
+          className={`badge ${
+            order.status === ORDER_STATUS.CREATED
+              ? "badge-primary"
+              : order.status === ORDER_STATUS.IN_PROGRESS
+              ? "badge-warning"
+              : "badge-success"
+          } `}
+        >
+          {order.status}
+        </span>
       </td>
       <td>
-        <Button onClick={()=>(onEditOrderData(order))} variant="outline-info">
-          <i className="fas fa-pencil-alt"></i>
-        </Button>
+        {order.status !== ORDER_STATUS.DONE && (
+          <Button onClick={() => onEditOrderData(order)} variant="outline-info">
+            <i className="fas fa-pencil-alt"></i>
+          </Button>
+        )}
       </td>
     </tr>
   );

@@ -22,8 +22,10 @@ export const AddOrder = ({ show, handleClose, coffees, handleSave }) => {
             <Form.Control
               as="select"
               name="coffeeId"
+              required
               onChange={handleInputChange}
             >
+              <option value={""}>Choose coffee</option>
               {coffees.data.map((coffee) => {
                 return (
                   <option key={coffee.id} value={coffee.id}>
@@ -31,7 +33,6 @@ export const AddOrder = ({ show, handleClose, coffees, handleSave }) => {
                   </option>
                 );
               })}
-              <option></option>
             </Form.Control>
           </Form.Group>
           <Form.Group controlId="count">
@@ -39,6 +40,7 @@ export const AddOrder = ({ show, handleClose, coffees, handleSave }) => {
             <Form.Control
               type="number"
               name="count"
+              required
               min={1}
               placeholder="Count"
               onChange={handleInputChange}
@@ -50,6 +52,7 @@ export const AddOrder = ({ show, handleClose, coffees, handleSave }) => {
               name="note"
               as="textarea"
               rows={3}
+              required
               onChange={handleInputChange}
             />
           </Form.Group>
