@@ -11,7 +11,7 @@ class CoffeeService extends HttpClient {
 
     getCoffeeById(id){
        return this.getCoffee().then(res=>{
-            return res.data.find(item=>item.id === id)
+            return res.data.find(item=>item.id === Number(id))
         })
     }
 }

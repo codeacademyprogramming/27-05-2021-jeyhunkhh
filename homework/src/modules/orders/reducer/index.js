@@ -1,21 +1,21 @@
 import { ORDER_ACTIONS } from "../actions/consts";
 
-const order = [
-    {
-    id:1,
+const orders = [
+  {
+    id: 1,
     coffeeId: 1,
     note: "extra caramel",
-    count:1,
-    price:5,
-    status:'DONE'
-    }
-]
+    count: 1,
+    price: 5,
+    status: "DONE",
+  },
+];
 
-export function orderReducer(state = order, action) {
-    switch (action.type) {
-        case ORDER_ACTIONS.ADD_ORDER:
-            return state;
-        default:
-           return state;
-    }
+export function orderReducer(state = { orders }, action) {
+  switch (action.type) {
+    case ORDER_ACTIONS.ADD_ORDER_SUCCESS:
+      return { ...state, orders: [...state.orders, action.payload] };
+    default:
+      return state;
+  }
 }
