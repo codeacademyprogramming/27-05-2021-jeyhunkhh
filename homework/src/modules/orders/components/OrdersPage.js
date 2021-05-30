@@ -66,7 +66,7 @@ export const OrdersPage = () => {
   }, []);
 
   const computedOrders = useMemo(() => {
-    let ordersData = orders;
+    let ordersData = [...orders];
     let statusOrder = [];
     for (const key in ORDER_STATUS) {
       statusOrder.push(ORDER_STATUS[key]);
